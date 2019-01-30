@@ -8,6 +8,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends ros-kinetic-ros
 RUN apt-get install -y build-essential libbullet-dev
 RUN sudo rosdep init && rosdep update
 
+# Install robodevel dependencies
+RUN apt-get install -y libfltk1.3-dev flex bison libjpeg-dev
+RUN sudo apt-get install -y mercurial
+
 # Setup ROS
 RUN mkdir -p /root/catkin_ws/src
 WORKDIR /root/catkin_ws/src
@@ -17,7 +21,6 @@ RUN ["/bin/bash", "-c", "source /opt/ros/kinetic/setup.bash; catkin_make"]
 RUN echo "source /root/catkin_ws/devel/setup.bash" >> /root/.bashrc
 
 # Pull RoboDevel, OCULite, aquacore, aquahw
-RUN sudo apt-get install -y mercurial
 WORKDIR /root/
 # TODO: figure out a secure and semi-public way to hg clone (e.g. via ssh-keygen)
 # ..... for now, we require the following to be pulled manually into pwd:
@@ -31,7 +34,6 @@ ADD ./aquahw /root/catkin_ws/src/aquahw
 ADD ./aquacore /root/catkin_ws/src/aquacore
 
 # Compile RoboDevel
-RUN apt-get install -y libfltk1.3-dev flex bison libjpeg-dev
 WORKDIR /root/RoboDevel
 RUN ["/bin/bash", "-c", "source aqua-environment-linux-aqua5; make rhex"]
 RUN echo "export CURRDIR=\$(pwd) && cd /root/RoboDevel && source aqua-environment-linux-aqua5 && cd \$CURRDIR" >> /root/.bashrc
