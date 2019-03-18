@@ -9,7 +9,7 @@ RUN apt-get install -y build-essential libbullet-dev
 RUN sudo rosdep init && rosdep update
 
 # Install robodevel dependencies
-RUN apt-get install -y libfltk1.3-dev flex bison libjpeg-dev
+RUN apt-get install -y libfltk1.3-dev flex bison libjpeg-dev vim
 RUN sudo apt-get install -y mercurial
 
 # Setup ROS
